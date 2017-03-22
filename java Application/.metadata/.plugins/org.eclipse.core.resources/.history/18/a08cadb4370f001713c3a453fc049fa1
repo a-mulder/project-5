@@ -1,0 +1,5 @@
+import java.awt.Container;
+
+public class Paneel extends Container {
+
+}

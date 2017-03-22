@@ -1,0 +1,37 @@
+import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.Vector;
+
+import javax.swing.*;
+
+public class Paneel extends JPanel {
+	
+	String[] columnNames = {
+			"id",
+			"firstname",
+			"lastname",
+			"city",
+			"street",
+			"house_number"
+	};
+	
+	Vector dataList = new Vector();
+	
+	private JTable mainTable;
+	private JScrollPane mainScrollPane;
+	
+	private LoadDriver mainDriver;
+	
+	public Paneel(){
+		setLayout(new BorderLayout());
+		
+		mainDriver = new LoadDriver();
+		
+		dataList = mainDriver.selectSquery("SELECT * FROM adresboek");
+		//mainTable = new JTable(dataList, columnNames);
+		//mainScrollPane = new JScrollPane(mainTable);
+		System.out.println(dataList);
+		//add(mainScrollPane, BorderLayout.CENTER);
+		
+	}
+}

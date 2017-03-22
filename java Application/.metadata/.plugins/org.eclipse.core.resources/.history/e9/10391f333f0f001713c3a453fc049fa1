@@ -1,0 +1,38 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import com.mysql.jdbc.Statement;
+
+public class LoadDriver {
+	
+	private String username, password, db, ip;
+	
+	Connection conn;
+	
+	public LoadDriver(){
+		this("root", "", "Adresboek", "localhost:3306");
+	}
+	
+	public LoadDriver(String username, String password, String db, String ip){
+		this.username = username;
+		this.password = password;
+		this.db = db;
+		this.ip = ip;
+		
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection("jdbc:mysql://"+ip+"/"+db+"?user="+username+"&password="+password);
+			 
+		}catch(SQLException | ClassNotFoundException x){
+			System.out.println("Er is geen verbinding met de database. Error:");
+			System.out.println("SQLException: " + x);
+		}
+	}
+	public ResultSet selectSquery(String sql){
+		Statement stmt = conn.createStatement();
+		return null;
+		
+	}
+}

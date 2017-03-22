@@ -1,0 +1,19 @@
+import java.awt.BorderLayout;
+
+import javax.swing.*;
+
+public class Paneel extends JPanel {
+	
+	String[] columnNames = {
+			"id",
+			"firstname",
+			"lastname",
+			"city",
+			"street",
+			"house_number"
+	};
+	
+	public Paneel(){
+		setLayout(new BorderLayout());
+	}
+}
