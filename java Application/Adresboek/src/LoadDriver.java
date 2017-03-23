@@ -1,7 +1,4 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 
@@ -20,14 +17,16 @@ public class LoadDriver {
 		this.ip = ip;
 	}
 	
-	public DefaultTableModel getTableModel(String sql){
+	public boolean isCellEditable(int row, int column){
+     	return false;}
+	
+	public DefaultTableModel getTableModel(String sql, Connection conn){
 		DefaultTableModel model = null;
 		try {
-			Connection conn = getConnection();
-			java.sql.PreparedStatement stmt = conn.prepareStatement(sql);
+			PreparedStatement stmt = conn.prepareStatement(sql);
 			ResultSet result = stmt.executeQuery();
 			
-			java.sql.ResultSetMetaData rsmt = stmt.getMetaData();
+			ResultSetMetaData rsmt = stmt.getMetaData();
 			int count = rsmt.getColumnCount();
 			Vector<String> columnNames = new Vector<>();
 			for (int i = 1; i <= count; i++ ){
@@ -35,11 +34,13 @@ public class LoadDriver {
 			}
 			model = new DefaultTableModel(columnNames, 0);
 			
+			int rowCount = 0;
 			while(result.next()){
 				Vector<String> row = new Vector<>();
 			    for (int i = 1; i <= count; i++) {
 			        row.add(result.getString(i));
 			    }
+			    rowCount++;
 			    model.addRow(row);
 			}
 		} catch (Exception e) {
@@ -62,3 +63,5 @@ public class LoadDriver {
 		return conn;
 	}
 }
+	
+	 
