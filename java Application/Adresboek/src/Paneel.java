@@ -1,4 +1,6 @@
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 
 import javax.swing.*;
@@ -6,9 +8,8 @@ import javax.swing.table.DefaultTableModel;
 
 public class Paneel extends JPanel {
 	
-	private JTable mainTable;
-	private JScrollPane mainScrollPane;
 	private JButton findButton;
+	private MidPanel midPanel;
 	
 	private LoadDriver mainDriver;
 	
@@ -16,20 +17,22 @@ public class Paneel extends JPanel {
 		setLayout(new BorderLayout());
 		
 		mainDriver = new LoadDriver();
-		findButton = new JButton("Find");
-		
 		Connection conn = mainDriver.getConnection();
+		mainDriver.initConnection(conn);
 		
-		DefaultTableModel model = mainDriver.getTableModel("SELECT * FROM adresboek", conn);
+		findButton = new JButton("Find");
+		midPanel = new MidPanel(conn, mainDriver);
 		
-		mainTable = new JTable(model){
-			public boolean isCellEditable(int row, int column) {                
-                return false;               
-			};
-		};
-		mainScrollPane = new JScrollPane(mainTable);
+		findButton.addActionListener(new FindButtonHandler());
 		
-		add(mainScrollPane, BorderLayout.CENTER);
+		add(midPanel, BorderLayout.CENTER);
+		add(findButton, BorderLayout.WEST);
 		
+		
+	}
+	
+	class FindButtonHandler implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+		}
 	}
 }

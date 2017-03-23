@@ -5,6 +5,7 @@ import javax.swing.table.DefaultTableModel;
 public class LoadDriver {
 	
 	private String username, password, db, ip;
+	private Connection conn;
 	
 	public LoadDriver(){
 		this("root", "", "Adresboek", "localhost:3306");
@@ -16,11 +17,11 @@ public class LoadDriver {
 		this.db = db;
 		this.ip = ip;
 	}
+	public void initConnection(Connection conn){
+		this.conn = conn;
+	}
 	
-	public boolean isCellEditable(int row, int column){
-     	return false;}
-	
-	public DefaultTableModel getTableModel(String sql, Connection conn){
+	public DefaultTableModel getTableModel(String sql){
 		DefaultTableModel model = null;
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -48,6 +49,22 @@ public class LoadDriver {
 		}
 		return model;
 		
+	}
+	
+	public Vector<String> getTableColumnNames(String sql){
+		Vector<String> columnNames = new Vector<>();
+		try{
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			ResultSet result = stmt.executeQuery();
+			ResultSetMetaData rsmt = stmt.getMetaData();
+			int count = rsmt.getColumnCount();
+			for (int i = 1; i <= count; i++ ){
+			    columnNames.add(rsmt.getColumnName(i));
+			}
+		}catch(Exception e){
+			System.out.print(e);
+		}
+		return columnNames;
 	}
 	
 	public Connection getConnection(){
