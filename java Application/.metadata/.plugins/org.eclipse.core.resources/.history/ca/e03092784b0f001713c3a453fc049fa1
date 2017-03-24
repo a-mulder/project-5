@@ -1,0 +1,66 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import com.mysql.jdbc.PreparedStatement;
+import com.mysql.jdbc.Statement;
+
+public class LoadDriver {
+	
+	private String username, password, db, ip;
+	
+	public LoadDriver(){
+		this("root", "", "Adresboek", "localhost:3306");
+	}
+	
+	public LoadDriver(String username, String password, String db, String ip){
+		this.username = username;
+		this.password = password;
+		this.db = db;
+		this.ip = ip;
+	}
+	
+	public ArrayList<Object[]> selectSquery(String sql){
+		ArrayList<Object[]> array = new ArrayList<Object[]>();
+		try {
+			Connection conn = getConnection();
+			java.sql.PreparedStatement stmt = conn.prepareStatement(sql);
+			ResultSet result = stmt.executeQuery();
+			
+			int index = 0;
+			while(result.next()){
+				Object[] info = {
+					result.getInt("id"),
+					result.getString("firstname"),
+					result.getString("lastname"),
+					result.getString("city"),
+					result.getString("street"),
+					result.getString("house_number")	
+				};
+				
+				array.add(info);
+				index++;
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return array;
+		
+	}
+	
+	public Connection getConnection(){
+		Connection conn;
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection("jdbc:mysql://"+ip+"/"+db+"?user="+username+"&password="+password);
+		}catch(SQLException | ClassNotFoundException x){
+			System.out.println("Er is geen verbinding met de database. Error:");
+			System.out.println("SQLException: " + x);
+			conn = null;
+		}
+		return conn;
+	}
+}
