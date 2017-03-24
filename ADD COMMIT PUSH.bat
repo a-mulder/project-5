@@ -1,3 +1,4 @@
+echo off
 git add .
 PAUSE
 set /p msg="Entel comment: "

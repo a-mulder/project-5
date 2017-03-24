@@ -19,7 +19,7 @@ $currentItem["id"] = 1;
     </div>
 </form>
 <div class="holder">
-    <div class="previous"> < </div>
-    <div class="current"><?php echo $currentItem["id"]; ?></div>
-    <div class="next"> > </div>
+    <div class="previous clickable"> < </div>
+    <div class="current clickable"><?php echo $currentItem["id"]; ?></div>
+    <div class="next clickable"> > </div>
 </div>

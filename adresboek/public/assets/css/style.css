@@ -37,3 +37,7 @@ body {
 .holder .next {
     margin-right:5px;
 }
+
+.clickable {
+    cursor: pointer;
+}
